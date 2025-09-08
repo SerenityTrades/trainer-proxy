@@ -1,6 +1,14 @@
 {
   "name": "trainer-proxy",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
-  "dependencies": {}
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo Edge functions are built by Vercel",
+    "start": "vercel dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }
