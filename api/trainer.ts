@@ -1,36 +1,33 @@
+// api/trainer.ts
+// Edge-safe handler: no process.env, no Node types needed.
+export const config = { runtime: 'edge' };
+
 export default async function handler(req: Request): Promise<Response> {
-  if (req.method !== 'POST') return new Response('OK');
+  const json = (obj: unknown, status = 200) =>
+    new Response(JSON.stringify(obj), {
+      status,
+      headers: { 'content-type': 'application/json' },
+    });
+
+  if (req.method === 'GET') {
+    // Health-check in browser
+    return json({ ok: true, route: '/api/trainer', runtime: 'edge' });
+  }
+
+  if (req.method !== 'POST') {
+    return json({ error: 'Only POST requests allowed' }, 405);
+  }
+
   try {
     const { userText, memory, system } = await req.json();
 
-    const r = await fetch('https://api.openai.com/v1/responses', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY!}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        input: [
-          { role: 'system', content: system },
-          { role: 'developer', content: `Chat memory:\n${memory || ''}` },
-          { role: 'user', content: userText || '' }
-        ]
-      })
-    });
+    const lower = String(userText || '').toLowerCase();
+    const text = lower.includes('macro')
+      ? 'Macros = protein, carbs, fats. Rule: protein 1.6–2.2 g/kg, carbs 3–5 g/kg, fats ~0.7–1 g/kg.'
+      : 'Coach online. Ask about training, injuries, or nutrition.';
 
-    if (!r.ok) {
-      const text = await r.text();
-      return new Response(JSON.stringify({ error: text }), { status: r.status });
-    }
-
-    const data = await r.json();
-    const text =
-      data?.output?.[0]?.content?.map((c: any) => c?.text).filter(Boolean).join(' ').trim() ||
-      data?.output_text ||
-      'Sorry, I could not generate a response.';
-    return Response.json({ text });
+    return json({ text, echo: { userText, memory, system } });
   } catch (e: any) {
-    return new Response(JSON.stringify({ error: e?.message || 'Server error' }), { status: 500 });
+    return json({ error: e?.message || 'Server error' }, 500);
   }
 }
