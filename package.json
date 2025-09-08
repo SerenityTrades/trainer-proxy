@@ -1,0 +1,6 @@
+{
+  "name": "trainer-proxy",
+  "private": true,
+  "type": "module",
+  "dependencies": {}
+}
