@@ -1,11 +1,7 @@
 {
   "version": 2,
   "functions": {
-    "api/*.ts": {
-      "runtime": "nodejs22.x"
-    }
-  },
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" }
-  ]
+    "api/**/*.ts": { "runtime": "nodejs22.x" },
+    "api/**/*.js": { "runtime": "nodejs22.x" }
+  }
 }
