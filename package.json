@@ -2,15 +2,15 @@
   "name": "trainer-proxy",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
-  "engines": {
-    "node": "22.x"
-  },
+  "engines": { "node": ">=22 <23" },
   "scripts": {
-    "build": "echo \"nothing to build\""
+    "dev": "vercel dev",
+    "build": "echo \"No build step needed — Vercel compiles /api automatically\"",
+    "start": "node api/healthcheck.js"
   },
+  "dependencies": {},
   "devDependencies": {
-    "@types/node": "^24.3.1",
-    "typescript": "^5.9.2"
+    "typescript": "^5.6.3",
+    "@types/node": "^22.5.0"
   }
 }
