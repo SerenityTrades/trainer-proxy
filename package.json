@@ -1,21 +1,17 @@
 {
   "name": "trainer-proxy",
   "version": "1.0.0",
-  "main": "api/trainer.ts",
-  "license": "MIT",
+  "private": true,
   "scripts": {
-    "dev": "vercel dev",
-    "build": "tsc",
-    "start": "vercel dev"
-  },
-  "dependencies": {
-    "@vercel/node": "^2.15.10",
-    "node-fetch": "^2.6.7"
-  },
-  "devDependencies": {
-    "typescript": "^5.4.0"
+    "vercel-build": "tsc -p tsconfig.json"
   },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@vercel/node": "^3.0.22"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
   }
 }
